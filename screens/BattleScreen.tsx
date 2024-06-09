@@ -11,6 +11,10 @@ const Battle = ({navigation}) => {
   const {
     currentPlayer,
     setCurrentPlayer,
+    hasFirstPersonUsedPowerup,
+    setHasFirstPersonUsedPowerup,
+    hasSecondPersonUsedPowerup,
+    setHasSecondPersonUsedPowerup,
     boardState1,
     boardState2,
     battleState1,
@@ -18,6 +22,9 @@ const Battle = ({navigation}) => {
     battleState2,
     setBattleState2,
   } = useContext(GameContext) as GameContextProps;
+
+
+  const [powerup, setPowerup] = useState(null);
 
   const endGame = (boardState, battleState) => {
     // count number of cells that are both hit and have a ship using map filter reduce
@@ -30,45 +37,139 @@ const Battle = ({navigation}) => {
 
   const handleCellPress = (row, col) => {
     if (currentPlayer === 'Player1') {
-      // change the cell [row][col] in battleState2 to 'hit'
-      const newBoard = battleState2.map((boardRow, rowIndex) =>
-        boardRow.map((cell, colIndex) =>
-          cell
-        )
-      );
-      newBoard[row][col] = 'hit';
-      setBattleState2(newBoard);
-      if (boardState2[row][col] === null) {
-        navigation.push('HandOver', { message: 'Player1 missed!' });
-      } else {
+      if (!powerup) {
+        // change the cell [row][col] in battleState2 to 'hit'
+        const newBoard = battleState2.map((boardRow, rowIndex) =>
+          boardRow.map((cell, colIndex) =>
+            cell
+          )
+        );
+        newBoard[row][col] = 'hit';
+        setBattleState2(newBoard);
+        if (boardState2[row][col] === null) {
+          navigation.push('HandOver', { message: 'Player1 missed!' });
+        } else {
+          if (endGame(boardState2, newBoard)) {
+            navigation.push('GameOver');
+          } else {
+            navigation.push('HandOver', { message: 'Player1 hit!' });
+          }
+        }
+      } else if (powerup === "bomb") {
+        // change the 3x3 cells around [row][col] in battleState2 to 'hit'
+        const newBoard = battleState2.map((boardRow, rowIndex) =>
+          boardRow.map((cell, colIndex) =>
+            cell
+          )
+        );
+        for (let i = Math.max(0, row - 1); i < Math.min(10, row + 2); i++) {
+          for (let j = Math.max(0, col - 1); j < Math.min(10, col + 2); j++) {
+            newBoard[i][j] = 'hit';
+          }
+        }
+        setBattleState2(newBoard);
         if (endGame(boardState2, newBoard)) {
           navigation.push('GameOver');
         } else {
-          navigation.push('HandOver', { message: 'Player1 hit!' });
+          navigation.push('HandOver', { message: 'Player1 used bomb powerup' });
         }
-      }
-    } else {
-      // change the cell [row][col] in battleState2 to 'hit'
-      const newBoard = battleState1.map((boardRow, rowIndex) =>
-        boardRow.map((cell, colIndex) =>
-          cell
-        )
-      );
-      newBoard[row][col] = 'hit';
-      setBattleState1(newBoard);
-      if (boardState1[row][col] === null) {
-        navigation.push('HandOver', { message: 'Player2 miss' });
-
+        setHasFirstPersonUsedPowerup(true);
+        setPowerup(null);
       } else {
+        // change the cells in the same row or column as [row][col] in battleState2 to 'hit'
+        // choose randomly row or column
+        const newBoard = battleState2.map((boardRow, rowIndex) =>
+          boardRow.map((cell, colIndex) =>
+            cell
+          )
+        );
+        const isRow = Math.random() < 0.5;
+        for (let i = 0; i < 10; i++) {
+          if (isRow) {
+            newBoard[row][i] = 'hit';
+          } else {
+            newBoard[i][col] = 'hit';
+          }
+        }
+        setBattleState2(newBoard);
+        if (endGame(boardState2, newBoard)) {
+          navigation.push('GameOver');
+        } else {
+          navigation.push('HandOver', { message: 'Player1 used laser powerup' });
+        }
+        setHasFirstPersonUsedPowerup(true);
+        setPowerup(null);
+      }
+      
+    } else {
+      if (!powerup) {
+        // change the cell [row][col] in battleState2 to 'hit'
+        const newBoard = battleState1.map((boardRow, rowIndex) =>
+          boardRow.map((cell, colIndex) =>
+            cell
+          )
+        );
+        newBoard[row][col] = 'hit';
+        setBattleState1(newBoard);
+        if (boardState1[row][col] === null) {
+          navigation.push('HandOver', { message: 'Player2 miss' });
+
+        } else {
+          if (endGame(boardState1, newBoard)) {
+            navigation.push('GameOver');
+          } else {
+            navigation.push('HandOver', { message: 'Player2 hit!' });
+          }
+        }
+      } else if (powerup === "bomb") {
+        // change the 3x3 cells around [row][col] in battleState2 to 'hit'
+        const newBoard = battleState1.map((boardRow, rowIndex) =>
+          boardRow.map((cell, colIndex) =>
+            cell
+          )
+        );
+        for (let i = Math.max(0, row - 1); i < Math.min(10, row + 2); i++) {
+          for (let j = Math.max(0, col - 1); j < Math.min(10, col + 2); j++) {
+            newBoard[i][j] = 'hit';
+          }
+        }
+        setBattleState1(newBoard);
         if (endGame(boardState1, newBoard)) {
           navigation.push('GameOver');
         } else {
-          navigation.push('HandOver', { message: 'Player1 hit!' });
+          navigation.push('HandOver', { message: 'Player2 used bomb powerup' });
         }
+        setHasSecondPersonUsedPowerup(true);
+        setPowerup(null);
+      } else {
+        // change the cells in the same row or column as [row][col] in battleState2 to 'hit'
+        // choose randomly row or column
+        const newBoard = battleState1.map((boardRow, rowIndex) =>
+          boardRow.map((cell, colIndex) =>
+            cell
+          )
+        );
+        const isRow = Math.random() < 0.5;
+        for (let i = 0; i < 10; i++) {
+          if (isRow) {
+            newBoard[row][i] = 'hit';
+          } else {
+            newBoard[i][col] = 'hit';
+          }
+        }
+        setBattleState1(newBoard);
+        if (endGame(boardState1, newBoard)) {
+          navigation.push('GameOver');
+        } else {
+          navigation.push('HandOver', { message: 'Player2 used laser powerup' });
+        }
+        setHasSecondPersonUsedPowerup(true);
+        setPowerup(null);
       }
     }
     setCurrentPlayer((currentPlayer === 'Player1') ? 'Player2' : 'Player1');
   };
+
 
   return (
     <View style={styles.container}>
@@ -80,16 +181,18 @@ const Battle = ({navigation}) => {
         <View style={styles.subcontainer}>
           <View style={styles.subsubcontainer}>
             <Text style={styles.subtext}>Attack the opponent board!</Text>
-            <View>
+            {((currentPlayer === 'Player1') ? !hasFirstPersonUsedPowerup : !hasSecondPersonUsedPowerup) ? 
+            <View style={{gap:10}}>
               <View style={styles.powerup}>
-                <PowerupButton icon="bomb" /> 
+                <PowerupButton icon="bomb" handlePress={() => setPowerup('bomb')} /> 
                 <Text>Bomb</Text>
               </View>
               <View style={styles.powerup}>
-                <PowerupButton icon="times" /> 
+                <PowerupButton icon="times" handlePress={() => setPowerup("laser")} /> 
                 <Text>Laser</Text>
               </View>
-            </View> 
+            </View> : null
+            }
           </View>
           <View >
             <Text>Your board</Text>

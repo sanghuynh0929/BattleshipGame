@@ -2,15 +2,13 @@ import React from 'react';
 import { TouchableOpacity, StyleSheet } from 'react-native';
 import { FontAwesome5 } from '@expo/vector-icons';
 
-const PowerupButton = ({ icon=null }) => {
-  const handlePress = () => {
-    console.log('Powerup button pressed');
-  };
-    return (
-      <TouchableOpacity style={[styles.cell]} onPress={handlePress}>
-        <FontAwesome5 name={icon} size={24} color="black" />
-      </TouchableOpacity>
-    );
+const PowerupButton = ({ handlePress, icon=null }) => {
+  // make unclickable if not enabled
+  return (
+    <TouchableOpacity style={[styles.cell]} onPress={handlePress} >
+      <FontAwesome5 name={icon} size={24} color="black" />
+    </TouchableOpacity>
+  );
 };
 
 const styles = StyleSheet.create({

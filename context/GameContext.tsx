@@ -12,6 +12,8 @@ interface GameContextProps {
   hasFirstPlayerConfigured: boolean;
   hasSecondPlayerConfigured: boolean;
   currentPlayer: 'Player1' | 'Player2';
+  hasFirstPersonUsedPowerup: boolean;
+  hasSecondPersonUsedPowerup: boolean;
   configureFirstPlayer: (board: BoardState) => void;
   configureSecondPlayer: (board: BoardState) => void;
   setBoardState1: (board: BoardState) => void;
@@ -21,6 +23,8 @@ interface GameContextProps {
   setIsPVP: (isPVP: boolean) => void;
   setCurrentPlayer: (currentPlayer: 'Player1' | 'Player2') => void;
   resetGame: () => void; 
+  setHasFirstPersonUsedPowerup: (hasFirstPersonUsedPowerup: boolean) => void;
+  setHasSecondPersonUsedPowerup: (hasSecondPersonUsedPowerup: boolean) => void;
 }
 
 const initialBoardState: BoardState = Array(10).fill(Array(10).fill(null));
@@ -36,6 +40,8 @@ const GameProvider = ({ children }) => {
   const [hasSecondPlayerConfigured, setHasSecondPlayerConfigured] = useState<boolean>(false);
   const [isPVP, setIsPVP] = useState<boolean>(true);
   const [currentPlayer, setCurrentPlayer] = useState<'Player1' | 'Player2'>('Player1');
+  const [hasFirstPersonUsedPowerup, setHasFirstPersonUsedPowerup] = useState<boolean>(false);
+  const [hasSecondPersonUsedPowerup, setHasSecondPersonUsedPowerup] = useState<boolean>(false);
 
 
   const configureFirstPlayer = (board: BoardState) => {
@@ -55,7 +61,8 @@ const GameProvider = ({ children }) => {
     setHasSecondPlayerConfigured(false);
     setBattleState1(initialBoardState);
     setBattleState2(initialBoardState);
-
+    setHasFirstPersonUsedPowerup(false);
+    setHasSecondPersonUsedPowerup(false);
   };
 
   return (
@@ -69,6 +76,10 @@ const GameProvider = ({ children }) => {
         hasSecondPlayerConfigured,
         isPVP,
         currentPlayer,
+        hasFirstPersonUsedPowerup,
+        hasSecondPersonUsedPowerup,
+        setHasFirstPersonUsedPowerup,
+        setHasSecondPersonUsedPowerup,
         setBoardState1,
         setBoardState2,
         setBattleState1,
