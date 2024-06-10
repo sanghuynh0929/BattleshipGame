@@ -3,7 +3,7 @@ import { View, TouchableOpacity, StyleSheet, Text } from 'react-native';
 import { FontAwesome5 } from '@expo/vector-icons'; 
 
 
-const IconCell = ({ color, icon, onCellPress, onCellLongPress }) => {
+const IconCell = ({ color, icon, onCellPress, onCellLongPress=null }) => {
   return (
     <TouchableOpacity onPress={onCellPress} onLongPress={onCellLongPress} style={[styles.cell, { backgroundColor: color }]} >
         <FontAwesome5 name={icon} size={20} color="black" />

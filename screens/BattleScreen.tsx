@@ -21,6 +21,12 @@ const Battle = ({navigation}) => {
     setBattleState1,
     battleState2,
     setBattleState2,
+    redSize,
+    blueSize,
+    greenSize,
+    cyanSize,
+    yellowSize,
+    magentaSize,
   } = useContext(GameContext) as GameContextProps;
 
 
@@ -32,7 +38,7 @@ const Battle = ({navigation}) => {
       boardRow.filter((cell, colIndex) =>
         cell !== null && battleState[rowIndex][colIndex] !== null
       ).length).reduce((acc, hits) => acc + hits, 0);
-    return totalHits === 19;
+    return totalHits === redSize + blueSize + greenSize + cyanSize + yellowSize + magentaSize;
   }
 
   const handleCellPress = (row, col) => {

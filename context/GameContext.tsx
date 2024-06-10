@@ -11,9 +11,29 @@ interface GameContextProps {
   isPVP: boolean;
   hasFirstPlayerConfigured: boolean;
   hasSecondPlayerConfigured: boolean;
+  setHasFirstPlayerConfigured: (hasFirstPlayerConfigured: boolean) => void;
+  setHasSecondPlayerConfigured: (hasSecondPlayerConfigured: boolean) => void;
+
   currentPlayer: 'Player1' | 'Player2';
   hasFirstPersonUsedPowerup: boolean;
   hasSecondPersonUsedPowerup: boolean;
+
+  redSize: number;
+  blueSize: number;
+  greenSize: number;
+  cyanSize: number;
+  yellowSize: number;
+  magentaSize: number;
+  setRedSize: (size: number) => void;
+  setBlueSize: (size: number) => void;
+  setGreenSize: (size: number) => void;
+  setCyanSize: (size: number) => void;
+  setYellowSize: (size: number) => void;
+  setMagentaSize: (size: number) => void;
+
+  hasChosenShipSize: boolean;
+  setHasChosenShipSize: (hasChosenShipSize: boolean) => void;
+
   configureFirstPlayer: (board: BoardState) => void;
   configureSecondPlayer: (board: BoardState) => void;
   setBoardState1: (board: BoardState) => void;
@@ -43,6 +63,13 @@ const GameProvider = ({ children }) => {
   const [hasFirstPersonUsedPowerup, setHasFirstPersonUsedPowerup] = useState<boolean>(false);
   const [hasSecondPersonUsedPowerup, setHasSecondPersonUsedPowerup] = useState<boolean>(false);
 
+  const [redSize, setRedSize] = useState<number>(5);
+  const [blueSize, setBlueSize] = useState<number>(4);
+  const [greenSize, setGreenSize] = useState<number>(3);
+  const [cyanSize, setCyanSize] = useState<number>(3);
+  const [yellowSize, setYellowSize] = useState<number>(2);
+  const [magentaSize, setMagentaSize] = useState<number>(2);
+  const [hasChosenShipSize, setHasChosenShipSize] = useState<boolean>(false);
 
   const configureFirstPlayer = (board: BoardState) => {
     setBoardState1(board);
@@ -63,6 +90,14 @@ const GameProvider = ({ children }) => {
     setBattleState2(initialBoardState);
     setHasFirstPersonUsedPowerup(false);
     setHasSecondPersonUsedPowerup(false);
+
+    setRedSize(5);
+    setBlueSize(4);
+    setGreenSize(3);
+    setCyanSize(3);
+    setYellowSize(2);
+    setMagentaSize(2);
+    setHasChosenShipSize(false);
   };
 
   return (
@@ -74,10 +109,28 @@ const GameProvider = ({ children }) => {
         battleState2,
         hasFirstPlayerConfigured,
         hasSecondPlayerConfigured,
+
         isPVP,
         currentPlayer,
         hasFirstPersonUsedPowerup,
         hasSecondPersonUsedPowerup,
+
+        hasChosenShipSize,
+        redSize,
+        blueSize,
+        greenSize,
+        cyanSize,
+        yellowSize,
+        magentaSize,
+        setHasChosenShipSize,
+        setRedSize,
+        setBlueSize,
+        setGreenSize,
+        setCyanSize,
+        setYellowSize,
+        setMagentaSize,
+
+
         setHasFirstPersonUsedPowerup,
         setHasSecondPersonUsedPowerup,
         setBoardState1,

@@ -1,7 +1,8 @@
-// components/Board.js
-import React from 'react';
+import React, {useContext} from 'react';
 import { View, StyleSheet } from 'react-native';
 import { FontAwesome5 } from '@expo/vector-icons';
+import { GameContext, GameContextProps } from '../context/GameContext';
+
 
 const MiniCell = ({ row, col, color, icon }) => {
     const handlePress = () => {
@@ -17,18 +18,27 @@ const MiniCell = ({ row, col, color, icon }) => {
   
 
 const MiniBoard = ({ size, player, board, battle }) => {
+  const {
+    redSize,
+    blueSize,
+    greenSize,
+    cyanSize,
+    yellowSize,
+    magentaSize,
+  } = useContext(GameContext) as GameContextProps;
+
 
   let color = (player === 'Player1') ? 'lightblue' : 'lightpink';
 
     // check if a ship is totally destroyed
       // if so, set the color of the cell to that ship's color
       // otherwise, use the default color
-      let countRed = 5;
-      let countBlue = 4;
-      let countGreen = 3;
-      let countCyan = 3;
-      let countYellow = 2;
-      let countMagenta = 2;
+      let countRed = redSize
+      let countBlue = blueSize;
+      let countGreen = greenSize;
+      let countCyan = cyanSize;
+      let countYellow = yellowSize;
+      let countMagenta = magentaSize;
       // red is destroyed if total count of hit red cells = 5
 
       for (let i = 0; i < size; i++) {

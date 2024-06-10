@@ -21,17 +21,19 @@ const ConfigureShipsScreen: React.FC<Props> = ({ navigation }) => {
     isPVP,
     hasFirstPlayerConfigured,
     hasSecondPlayerConfigured,
-    setBattleState1,
-    setBattleState2,
+    redSize,
+    blueSize,
+    greenSize,
+    cyanSize,
+    yellowSize,
+    magentaSize,
     configureFirstPlayer,
     configureSecondPlayer,
-    resetGame,
   } = useContext(GameContext) as GameContextProps;
 
   // Determine which player is configuring their ships
   let player : 'Player1' | 'Player2' = 'Player2';
   if (!hasFirstPlayerConfigured) {
-    resetGame();
     player = 'Player1';
   } else if (!hasSecondPlayerConfigured) {
     player = 'Player2';
@@ -53,12 +55,12 @@ const ConfigureShipsScreen: React.FC<Props> = ({ navigation }) => {
 
   // Board validation logic
   const [board, setBoard] = useState(Array(10).fill(Array(10).fill(null))); // [row][col]
-  const [redCounter, setRedCounter] = useState(5);
-  const [blueCounter, setBlueCounter] = useState(4);
-  const [greenCounter, setGreenCounter] = useState(3);
-  const [cyanCounter, setCyanCounter] = useState(3);
-  const [yellowCounter, setYellowCounter] = useState(2);
-  const [magentaCounter, setMagentaCounter] = useState(2);
+  const [redCounter, setRedCounter] = useState(redSize);
+  const [blueCounter, setBlueCounter] = useState(blueSize);
+  const [greenCounter, setGreenCounter] = useState(greenSize);
+  const [cyanCounter, setCyanCounter] = useState(cyanSize);
+  const [yellowCounter, setYellowCounter] = useState(yellowSize);
+  const [magentaCounter, setMagentaCounter] = useState(magentaSize);
 
   
 
@@ -161,7 +163,7 @@ const ConfigureShipsScreen: React.FC<Props> = ({ navigation }) => {
         }
       }
     }
-    if (redCount !== 5 || blueCount !== 4 || greenCount !== 3 || cyanCount !== 3 || yellowCount !== 2 || magentaCount !== 2) {
+    if (redCount !== redSize || blueCount !== blueSize || greenCount !== greenSize || cyanCount !== cyanSize || yellowCount !== yellowSize || magentaCount !== magentaSize) {
       return false;
     } else return true;
   };
@@ -229,17 +231,17 @@ const ConfigureShipsScreen: React.FC<Props> = ({ navigation }) => {
   const handleCellLongPress = (color) => {
     const newBoard = board.map((boardRow) => boardRow.map((cell) => (cell === color ? null : cell)));
     if (color === 'red') {
-      setRedCounter(5);
+      setRedCounter(redSize);
     } else if (color === 'blue') {
-      setBlueCounter(4);
+      setBlueCounter(blueSize);
     } else if (color === 'green') {
-      setGreenCounter(3);
+      setGreenCounter(greenSize);
     } else if (color === 'cyan') {
-      setCyanCounter(3);
+      setCyanCounter(cyanSize);
     } else if (color === 'yellow') {
-      setYellowCounter(2);
+      setYellowCounter(yellowSize);
     } else if (color === 'magenta') {
-      setMagentaCounter(2);
+      setMagentaCounter(magentaSize);
     } else {
       return;
     }

@@ -38,7 +38,6 @@ const AppNavigator = () => {
       <Stack.Screen name="Settings" component={Settings} options={{headerShown: false, animation: "slide_from_bottom"}} />
       <Stack.Screen name="GameOver" component={GameOver} options={{headerShown: false, animation: "fade"}} />
       <Stack.Screen name="HandOver" component={HandOver} options={{headerShown: false, animation: "fade"}} />
-
     </Stack.Navigator>
     </NavigationContainer>
   );

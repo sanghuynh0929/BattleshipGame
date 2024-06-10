@@ -1,9 +1,19 @@
 // components/BattleBoard.js
-import React, { useState } from 'react';
+import React, { useState, useContext} from 'react';
 import { View, StyleSheet } from 'react-native';
 import Cell from './Cell';
+import { GameContext, GameContextProps } from '../context/GameContext';
 
 const BattleBoard = ({ size, player, onCellPress, board, battle }) => {
+  const {
+    redSize,
+    blueSize,
+    greenSize,
+    cyanSize,
+    yellowSize,
+    magentaSize,
+  } = useContext(GameContext) as GameContextProps;
+
   let color = (player === 'Player1') ? 'lightblue' : 'lightpink';
 
     // battle is an array, where battle[row][col] !== null if that cell is hit by a missile
@@ -13,12 +23,7 @@ const BattleBoard = ({ size, player, onCellPress, board, battle }) => {
     // check if a ship is totally destroyed
       // if so, set the color of the cell to that ship's color
       // otherwise, use the default color
-      let countRed = 5;
-      let countBlue = 4;
-      let countGreen = 3;
-      let countCyan = 3;
-      let countYellow = 2;
-      let countMagenta = 2;
+      let [countRed, countBlue, countGreen, countCyan, countYellow, countMagenta] = [redSize, blueSize, greenSize, cyanSize, yellowSize, magentaSize];
       // red is destroyed if total count of hit red cells = 5
 
       for (let i = 0; i < size; i++) {
